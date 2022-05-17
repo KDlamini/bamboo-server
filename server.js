@@ -10,10 +10,7 @@ const app = express();
 require('./db');
 
 const port = process.env.PORT || 5000;
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+const productRoutes = require('./routes/products');
 
 app.use(cors())
 app.use(logger('dev'));
@@ -22,8 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/products', productRoutes);
+
 app.get('/', (req, res) => {
-  res.send('Hello Back end!');
+  res.send('Hello Back end! server is running correctly.');
 });
 
 // catch 404 and forward to error handler
