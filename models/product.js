@@ -15,7 +15,7 @@ const dealsSchema = new mongoose.Schema({
 const productSchema = mongoose.Schema({
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    type: { type: String, required: true },
+    type: { type: String },
     brand: { type: String, required: true },
     color: { type: String, required: true },
     rating: { type: Number, required: true },
@@ -23,6 +23,7 @@ const productSchema = mongoose.Schema({
     image: { type: String, required: true },
     department: { type: String, required: true },
     category: { type: String, required: true },
+    features: { type: Array },
     deals: [dealsSchema],
     countInStock: { type: Number, required: true },
     reviews: [reviewSchema],
