@@ -6,11 +6,11 @@ mongoose.connect(process.env.BD_URI, { useNewUrlParser: true, useUnifiedTopology
 const dbConnection = mongoose.connection;
 
 dbConnection.on('error', (err) => {
-    console.log('MongoDB connection failed: ', err);
+    console.log('MongoDB connection failed 💥: ', err);
 });
 
 dbConnection.on('connected', () => {
-    console.log('MongoDB connected!');
+    console.log('MongoDB connected successfully!!! 👍');
 });
 
 module.exports = mongoose;
