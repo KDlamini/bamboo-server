@@ -21,9 +21,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/products', productRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Hello Back end! server is running correctly.');
-});
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '/client/build')));
+
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '/client/build/index.html'));
+//   })
+// } else {
+//   app.get('/', (req, res) => {
+//     res.send('Hello Back end! server is running correctly.');
+//   });
+// }
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
