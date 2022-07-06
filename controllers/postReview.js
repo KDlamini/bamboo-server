@@ -5,8 +5,16 @@ const postReview = async (req, res) => {
     const review = req.body;
 
     try {
-        const product = await Products.findById(id);
-        const data = await Products.findByIdAndUpdate(id, { reviews: product.reviews.push(review) }, { new: true })
+        // const product = await Products.findById(_id);
+        const data = await Products.findByIdAndUpdate(_id,
+            { $push: { reviews: review  } },
+            (error, success) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(success);
+            }
+            });
 
         res.status(200).json(data);
     } catch (error) {
