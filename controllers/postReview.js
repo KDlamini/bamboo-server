@@ -1,20 +1,11 @@
 const Products = require('../models/product');
 
 const postReview = async (req, res) => {
-    const { id: _id } = req.params;
+    const { id } = req.params;
     const review = req.body;
 
     try {
-        // const product = await Products.findById(_id);
-        const data = await Products.findByIdAndUpdate(_id,
-            { $push: { reviews: review  } },
-            (error, success) => {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log(success);
-            }
-            });
+        const data = await Products.findOneAndUpdate({_id: id}, {$push: {reviews: review}});
 
         res.status(200).json(data);
     } catch (error) {

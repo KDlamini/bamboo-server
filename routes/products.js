@@ -5,6 +5,6 @@ const getProducts = require('../controllers/getProducts');
 const postReview = require('../controllers/postReview');
 
 router.get('/', getProducts);
-router.patch('/:id/add_review', postReview);
+router.post('/:id/add_review', postReview);
 
 module.exports = router;
