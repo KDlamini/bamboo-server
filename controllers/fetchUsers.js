@@ -3,7 +3,7 @@ const Users = require('../models/user');
 const getUser = async (req, res) => {
     const { id:_id } = req.params;
     try {
-        const data = await Users.findOne({_id});
+        const data = await Users.findOne({ _id });
 
         res.status(200).json(data);
     } catch (error) {
