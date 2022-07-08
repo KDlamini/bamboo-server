@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/products', require('./routes/products'));
 app.use('/users', require('./routes/users'));
+app.use('/auth', require('./routes/auth'));
 
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, '/client/build')));
