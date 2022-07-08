@@ -4,6 +4,7 @@ const config = require('config');
 
 const Users = require("../models/user");
 
+// @desc    Login user
 const authUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -46,4 +47,10 @@ const authUser = async (req, res) => {
 
 };
 
-module.exports = authUser;
+// @desc    Get user data
+const getAuthUser = async (req, res) => {
+  const user = await Users.findById(req.user.id).select('-password');
+  res.json(user);
+}
+
+module.exports = { authUser, getAuthUser};
