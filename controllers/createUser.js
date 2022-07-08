@@ -4,6 +4,7 @@ const config = require('config');
 
 const Users = require("../models/user");
 
+// @desc    POST new user
 const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 

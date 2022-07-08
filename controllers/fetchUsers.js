@@ -1,5 +1,6 @@
 const Users = require('../models/user');
 
+// @desc    GET a user by id
 const getUser = async (req, res) => {
     const { id:_id } = req.params;
     try {
@@ -11,7 +12,7 @@ const getUser = async (req, res) => {
     }
 }
 
-
+// @desc    GET all users
 const getUsers = async (req, res) => {
     try {
         const data = await Users.find();
