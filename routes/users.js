@@ -2,8 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const { getUser, getUsers } = require('../controllers/fetchUsers');
+
+router.get('/', getUsers);
+router.get('/:id', getUser);
 
 module.exports = router;
