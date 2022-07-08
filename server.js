@@ -36,6 +36,10 @@ app.use('/users', require('./routes/users'));
 //   });
 // }
 
+  app.get('/', (req, res) => {
+    res.send('Hello Back end! server is running correctly.');
+  });
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
