@@ -10,7 +10,6 @@ const app = express();
 require('./db');
 
 const port = process.env.PORT || 5000;
-const productRoutes = require('./routes/products');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -22,7 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/products', productRoutes);
+app.use('/products', require('./routes/products'));
+app.use('/users', require('./routes/users'));
 
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, '/client/build')));
