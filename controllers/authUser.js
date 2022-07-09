@@ -12,17 +12,30 @@ const authUser = async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({
       message: "Please enter all fields",
+      status: 400,
     });
   }
 
   //Check if user exists
   const user = await Users.findOne({ email });
-  if (!user) return res.status(400).json({ message: "User does not exists" });
+
+  if (!user) {
+    return res.status(400).json({
+      message: "User does not exists",
+      status: 400
+    });
+  }
 
 
   //validate password
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+
+  if (!isMatch) {
+    return res.status(400).json({ 
+      message: "Invalid password",
+      status: 400
+    });
+  }
 
   //Create JWT
   jwt.sign(
@@ -40,6 +53,8 @@ const authUser = async (req, res) => {
           name: user.name,
           email: user.email,
         },
+        status: 200,
+        message: "Success",
       });
     }
   );
@@ -49,7 +64,11 @@ const authUser = async (req, res) => {
 // @desc    Get user data
 const getAuthUser = async (req, res) => {
   const user = await Users.findById(req.user.id).select('-password');
-  res.json(user);
+  res.json({
+    user,
+    status: 200,
+    message: "Success",
+  });
 }
 
 module.exports = { authUser, getAuthUser};

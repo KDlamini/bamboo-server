@@ -12,12 +12,13 @@ const createUser = async (req, res) => {
   if (!name || !email || !password) {
     return res.status(400).json({
       message: "Please enter all fields",
+      status: 400,
     });
   }
 
   //Check if user already exists
   const userRes = await Users.findOne({ email });
-  if (userRes) return res.status(400).json({ message: "User already exists" });
+  if (userRes) return res.status(400).json({ message: "User already exists", status: 400 });
 
   const user = new Users({
     name,
@@ -49,6 +50,8 @@ const createUser = async (req, res) => {
               name: newUser.name,
               email: newUser.email,
             },
+            status: 200,
+            message: "User created successfully",
           });
         }
       );
