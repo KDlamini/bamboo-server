@@ -44,7 +44,6 @@ const authUser = async (req, res) => {
     }
   );
 
-
 };
 
 // @desc    Get user data

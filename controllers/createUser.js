@@ -4,7 +4,7 @@ const config = require('config');
 
 const Users = require("../models/user");
 
-// @desc    POST new user
+// @desc    POST new user registration
 const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
