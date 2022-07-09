@@ -1,5 +1,6 @@
 const Products = require('../models/product');
 
+// @desc    POST a review
 const postReview = async (req, res) => {
     const { id } = req.params;
     const review = req.body;
