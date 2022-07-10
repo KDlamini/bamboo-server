@@ -5,9 +5,9 @@ const router = express.Router();
 
 const { authUser, getAuthUser } = require('../controllers/authUser');
 
-// @route   POST auth
+// @route   POST auth/login
 // @access  Public
-router.post('/', authUser);
+router.post('/login', authUser);
 
 // @route   GET auth/user
 // @access  Private

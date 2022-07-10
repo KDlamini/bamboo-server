@@ -5,9 +5,9 @@ const router = express.Router();
 const { getUser, getUsers } = require('../controllers/fetchUsers');
 const createUser = require('../controllers/createUser');
 
-// @route   POST users
+// @route   POST users/register
 // @access  Public
-router.post('/', createUser);
+router.post('/register', createUser);
 
 // @route   GET users
 // @access  Public
