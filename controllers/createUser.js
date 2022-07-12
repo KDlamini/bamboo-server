@@ -6,10 +6,10 @@ const Users = require("../models/user");
 
 // @desc    POST new user registration
 const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, surname, email, password } = req.body;
 
   //Validate the request body
-  if (!name || !email || !password) {
+  if (!name || !surname || !email || !password) {
     return res.status(400).json({
       message: "Please enter all fields",
       status: 400,
@@ -22,6 +22,7 @@ const createUser = async (req, res) => {
 
   const user = new Users({
     name,
+    surname,
     email,
     password,
   });
@@ -48,6 +49,7 @@ const createUser = async (req, res) => {
               type: "user",
               id: newUser._id,
               name: newUser.name,
+              surname: newUser.surname,
               email: newUser.email,
             },
             status: 200,
