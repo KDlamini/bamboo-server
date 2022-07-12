@@ -8,11 +8,6 @@ const reviewSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 }, { timeStamps: true });
 
-const dealsSchema = new mongoose.Schema({
-    available: { type: Boolean, required: true },
-    discount: { type: Number, required: true }
-});
-
 const productSchema = mongoose.Schema({
     name: { type: String, required: true },
     price: { type: Number, required: true },
@@ -25,7 +20,11 @@ const productSchema = mongoose.Schema({
     department: { type: String, required: true },
     category: { type: String, required: true },
     features: { type: Array },
-    deals: [dealsSchema],
+    deals: { type: Object, default: {
+        available: false,
+        discount: 0,
+        deal_type: '',
+    }},
     countInStock: { type: Number, required: true },
     reviews: [reviewSchema],
 }, { timeStamps: true });
