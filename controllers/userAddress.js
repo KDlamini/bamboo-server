@@ -14,4 +14,17 @@ const postAddress = async (req, res) => {
     }
 }
 
-module.exports = postAddress
+// @desc    POST remove address
+const removeAddress = async (req, res) => {
+    try {
+        const { user_id, id } = req.params;
+        const data = await Users.updateOne({ _id: user_id }, { $pull: { billing_address: {_id: id } } } )
+        
+
+        res.status(200).json({ data: data, status: 200 });
+    } catch (error) {
+        res.status(404).json({ message: error.message, status: 404 });
+    }
+}
+
+module.exports = { postAddress, removeAddress };
