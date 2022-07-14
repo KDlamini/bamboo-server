@@ -10,6 +10,6 @@ router.get('/', getProducts);
 
 // @route   POST products/:id/add_review
 // @access  Public
-router.post('/:id/add_review', postReview);
+router.post('/:id/review', postReview);
 
 module.exports = router;
