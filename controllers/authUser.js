@@ -48,10 +48,11 @@ const authUser = async (req, res) => {
       res.status(200).json({
         token,
         user: {
-          type: "user",
-          id: user._id,
+          role: user.role,
+          _id: user._id,
           name: user.name,
           email: user.email,
+          billing_address: user.billing_address,
         },
         status: 200,
         message: "Success",
