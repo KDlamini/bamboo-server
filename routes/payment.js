@@ -4,7 +4,7 @@ const router = express.Router();
 
 const createPayment = require('../controllers/payments');
 
-// @route   POST users/register
+// @route   POST payment/create
 // @access  Public
 router.post('/create', createPayment);
 
