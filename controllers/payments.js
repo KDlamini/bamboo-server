@@ -1,22 +1,43 @@
-const stripe = require('stripe')('sk_test_51LLkufIMZeVYl1jrdjwjNOvDt1oCnJR5AcVO0iyqngoVfA4nSoyraY5eVs909FQ0XfffKAegeBzGmyY1vCNwdSkJ00tzZ5G1I3');
+require('dotenv').config();
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // @desc    POST a payment
 const createPayment = async (req, res) => {
 
     try {
-        const order = req.body;
-        const payment = await stripe.paymentIntents.create({
-            amount: order.price * 100,
-            currency: 'usd',
-            payment_method_types: ['card'],
-            receipt_email: order.email,
-            description: `Order #${order.id}`,
-            metadata: {
-                order_id: order.id
-            }
-        });
+        const { order } = req.body;
 
-        res.status(200).send(payment);
+        const line_items = order.map(item => {
+            return {
+                price_data: {
+                    currency: 'usd',
+                    product_data: {
+                        name: item.name,
+                        images: [item.image],
+                        metadata: {
+                            id: item._id,
+                            type: item.type,
+                            brand: item.brand,
+                            color: item.color,
+                            description: item.description,
+                        },
+                    },
+                    unit_amount: item.discountPrice ? item.discountPrice * 100 : item.price * 100,
+                },
+                quantity: item.quantity,
+            };
+        }
+        );
+
+        const session = await stripe.checkout.sessions.create({
+            line_items,
+            mode: 'payment',
+            success_url: `${process.env.CLIENT_URL}/order_receipt`,
+            cancel_url: `${process.env.CLIENT_URL}/review_order`,
+        });
+        
+        res.send({ url: session.url });
     } catch (error) {
         res.status(404).json({ message: error.message});
     }

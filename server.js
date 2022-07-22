@@ -8,6 +8,7 @@ const path = require('path');
 const app = express();
 
 require('./db');
+require('dotenv').config();
 
 const port = process.env.PORT || 5000;
 
