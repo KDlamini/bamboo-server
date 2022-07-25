@@ -1,6 +1,9 @@
 require('dotenv').config();
 
+const ObjectId = require('mongodb').ObjectId;
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const Order = require('../models/order');
+const Products = require('../models/product');
 
 // @desc    POST a payment
 const createPayment = async (req, res) => {
@@ -8,11 +11,10 @@ const createPayment = async (req, res) => {
     try {
         const { userId, address, order } = req.body;
         const {
-            username, phone, house_name: houseName, street, city, state, zip,
+            phone, house_name: houseName, street, city, state, zip,
         } = address;
 
         const customer = await stripe.customers.create({
-            name: username,
             phone,
             address: {
                 city,
@@ -21,21 +23,12 @@ const createPayment = async (req, res) => {
                 postal_code: zip,
                 state: state
             },
-            currency: 'usd',
             metadata: { 
                 id: userId,
                 cart: JSON.stringify(order.map(item => {
                    return {
                     _id: item._id,
-                    type: item.type,
-                    name: item.name,
-                    brand: item.brand,
-                    color: item.color,
-                    description: item.description,
-                    price: item.price,
-                    discountPrice: item.discountPrice,
                     quantity: item.quantity,
-                    image: item.image,
                 }
                 })),
             }
@@ -73,10 +66,52 @@ const createPayment = async (req, res) => {
         
         res.send({ url: session.url });
     } catch (error) {
+        console.log(error);
         res.status(404).json({ message: error.message});
     }
 }
 
+// @desc    POST create an order
+const createOrder = async (customer, data) => {
+    const items = JSON.parse(customer.metadata.cart);
+    const itemsIds = [];
+
+    items.forEach(item => {
+        itemsIds.push(ObjectId(item._id));
+    });
+
+    const orderedItems = await Products.find({
+        "_id" : {
+          "$in" : itemsIds
+         }
+    });
+  
+    const newOrder = new Order({
+      userId: customer.metadata.id,
+      customerId: data.customer,
+      paymentIntentId: data.payment_intent,
+      products: orderedItems.map((item, index) => {
+          return {
+            ...item,
+            quantity: items[index].quantity,
+          };
+        }),
+      subtotal: data.amount_subtotal,
+      total: data.amount_total,
+      shipping: customer.address,
+      payment_status: data.payment_status,
+    });
+  
+    try {
+      const savedOrder = await newOrder.save();
+      console.log("Processed Order:", savedOrder);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+// @desc    POST a stripe event
 const eventHook = (request, response) => {
   const sig = request.headers['stripe-signature'];
 
@@ -93,15 +128,14 @@ const eventHook = (request, response) => {
 
 //   data = event.data.object;
 //   eventType = event.type;
-
+                              
     data = request.body.data.object;
     eventType = request.body.type;
 
   // Handle the event
     if (eventType === 'checkout.session.completed') {
         stripe.customers.retrieve(data.customer).then(customer => {
-            console.log(customer);
-            console.log("data: ", data);
+            createOrder(customer, data);
         }
         ).catch(err => {
             console.log(err);
