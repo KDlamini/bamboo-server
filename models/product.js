@@ -5,8 +5,9 @@ const reviewSchema = new mongoose.Schema({
     name: { type: String, required: true },
     comment: { type: String },
     rating: { type: Number, required: true },
-    createdAt: { type: Date, default: Date.now }
-}, { timeStamps: true });
+},
+{ timestamps: true }
+);
 
 const productSchema = mongoose.Schema({
     name: { type: String, required: true },
@@ -27,6 +28,8 @@ const productSchema = mongoose.Schema({
     }},
     countInStock: { type: Number, required: true },
     reviews: [reviewSchema],
-}, { timeStamps: true });
+},
+{ timestamps: true }
+);
 
 module.exports = mongoose.model('products', productSchema);

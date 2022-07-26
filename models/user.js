@@ -8,8 +8,9 @@ const addressSchema = new mongoose.Schema({
   city: { type: String },
   state: { type: String },
   zip: { type: String },
-  createdAt: { type: Date, default: Date.now }
-});
+},
+{ timestamps: true }
+);
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -19,8 +20,9 @@ const userSchema = new mongoose.Schema({
   billing_address: [addressSchema],
   image: { type: String },
   role: { type: String, default: "user" },
-  register_date: { type: Date, default: Date.now},
-});
+},
+{ timestamps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 
