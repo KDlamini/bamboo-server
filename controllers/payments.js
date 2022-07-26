@@ -80,22 +80,24 @@ const createOrder = async (customer, data) => {
         itemsIds.push(ObjectId(item._id));
     });
 
-    const orderedItems = await Products.find({
+    let orderedItems = await Products.find({
         "_id" : {
           "$in" : itemsIds
          }
     });
+
+    orderedItems = orderedItems.map((product, index) => {
+        return {
+          ...product,
+          quantity: items[index].quantity,
+        };
+      })
   
     const newOrder = new Order({
       userId: customer.metadata.id,
       customerId: data.customer,
       paymentIntentId: data.payment_intent,
-      products: orderedItems.map((item, index) => {
-          return {
-            ...item,
-            quantity: items[index].quantity,
-          };
-        }),
+      products: orderedItems,
       subtotal: data.amount_subtotal,
       total: data.amount_total,
       shipping: customer.address,
@@ -104,9 +106,9 @@ const createOrder = async (customer, data) => {
   
     try {
       const savedOrder = await newOrder.save();
-      console.log("Processed Order:", savedOrder);
+      return savedOrder;
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 
