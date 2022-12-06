@@ -39,9 +39,9 @@ app.use('/payment', require('./routes/payment'));
 //   });
 // }
 
-  app.get('/', (req, res) => {
-    res.send('Hello Back end! server is running correctly.');
-  });
+app.get("/", (req, res) => {
+  res.send('Hello Back end! server is running correctly.');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
