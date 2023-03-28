@@ -4,7 +4,7 @@ An api with end points to create/view/delete/update users, products, and orders.
 
 # Live link for API
 
- [Click Me!](https://shopcart-v1.herokuapp.com/)
+ [Click Me!](https://shopcart-server.vercel.app/)
 ## Built With
 
 - Node.js version 14
@@ -14,9 +14,9 @@ An api with end points to create/view/delete/update users, products, and orders.
 ## Getting Started
 
 The API will receive POST requests to create users,products, and orders and GET requests to view products and orders.
-The base URL is: https://shopcart-v1.herokuapp.com/
+The base URL is: https://shopcart-server.vercel.app/
 
-If you want to view Products you can call this endpoint:
+If you want to view Products you can append this endpoint to the URl:
 ```
 /products
 ```
